@@ -42,6 +42,21 @@ function computeAllTimeBalanceUntilPromise(targetDate)
     return ipcRenderer.invoke(IpcConstants.ComputeAllTimeBalanceUntil, targetDate);
 }
 
+function getInterfaceTourData()
+{
+    return ipcRenderer.invoke(IpcConstants.GetInterfaceTourData);
+}
+
+function setInterfaceTourSeen(seen)
+{
+    return ipcRenderer.invoke(IpcConstants.SetInterfaceTourSeen, seen);
+}
+
+function openInterfaceTourDestination(destination)
+{
+    ipcRenderer.send(IpcConstants.OpenInterfaceTourDestination, destination);
+}
+
 const calendarApi = {
     handleRefreshOnDayChange: (callback) => ipcRenderer.on(IpcConstants.RefreshOnDayChange, callback),
     handlePreferencesSaved: (callback) => ipcRenderer.on(IpcConstants.PreferencesSaved, callback),
@@ -50,6 +65,7 @@ const calendarApi = {
     handlePunchDate: (callback) => ipcRenderer.on(IpcConstants.PunchDate, callback),
     handleThemeChange: (callback) => ipcRenderer.on(IpcConstants.ReloadTheme, callback),
     handleLeaveBy: (callback) => ipcRenderer.on(IpcConstants.GetLeaveBy, callback),
+    handleShowInterfaceTour: (callback) => ipcRenderer.on(IpcConstants.ShowInterfaceTour, callback),
     getDefaultWidthHeight: getDefaultWidthHeight,
     handleToggleMainWindowWait: (callback) => ipcRenderer.on(IpcConstants.ToggleMainWindowWait, callback),
     switchView: () => switchView(),
@@ -59,6 +75,9 @@ const calendarApi = {
     setStoreData: (key, contents) => setStoreData(key, contents),
     deleteStoreData: (key) => deleteStoreData(key),
     computeAllTimeBalanceUntilPromise: (targetDate) => computeAllTimeBalanceUntilPromise(targetDate),
+    getInterfaceTourData: () => getInterfaceTourData(),
+    setInterfaceTourSeen: (seen) => setInterfaceTourSeen(seen),
+    openInterfaceTourDestination: (destination) => openInterfaceTourDestination(destination),
 };
 
 export {

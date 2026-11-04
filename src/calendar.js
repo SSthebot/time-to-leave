@@ -3,9 +3,12 @@
 import { CalendarFactory } from '../renderer/classes/CalendarFactory.js';
 import { applyTheme } from '../renderer/themes.js';
 import { searchLeaveByElement } from '../renderer/notification-channel.js';
+import InterfaceTour from './interface-tour.js';
 
 // Global values for calendar
 let calendar = undefined;
+let interfaceTour;
+let interfaceTourChecked = false;
 
 function setupCalendar(preferences)
 {
@@ -13,11 +16,23 @@ function setupCalendar(preferences)
     {
         calendar = await CalendarFactory.getInstance(preferences, languageData, calendar);
         applyTheme(preferences.theme);
+        if (!interfaceTourChecked && window.calendarApi.getInterfaceTourData)
+        {
+            interfaceTourChecked = true;
+            const tourData = await window.calendarApi.getInterfaceTourData();
+            interfaceTour = new InterfaceTour(window.calendarApi, tourData.translations);
+            if (!tourData.seen)
+            {
+                interfaceTour.start();
+            }
+        }
     });
 }
 
 function setupIpcHandlers()
 {
+    window.calendarApi.handleShowInterfaceTour?.(() => interfaceTour?.start());
+
     // Reload the calendar upon request from main
     window.calendarApi.handleCalendarReload(async() =>
     {

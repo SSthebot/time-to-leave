@@ -73,11 +73,15 @@ class Windows
         toggleMainWindowWait(true /*enable*/);
     }
 
-    static openPreferencesWindow(mainWindow)
+    static openPreferencesWindow(mainWindow, focusNotification = false)
     {
         if (global.prefWindow !== null)
         {
             global.prefWindow.show();
+            if (focusNotification)
+            {
+                global.prefWindow.webContents.executeJavaScript('document.querySelector(\'#notification\')?.scrollIntoView({ block: \'center\' }); document.querySelector(\'#notification\')?.focus();');
+            }
             return;
         }
 
@@ -106,6 +110,10 @@ class Windows
         global.prefWindow.webContents.ipc.on(IpcConstants.WindowReadyToShow, () =>
         {
             toggleMainWindowWait(false /*enable*/);
+            if (focusNotification)
+            {
+                global.prefWindow.webContents.executeJavaScript('document.querySelector(\'#notification\')?.scrollIntoView({ block: \'center\' }); document.querySelector(\'#notification\')?.focus();');
+            }
             global.prefWindow.show();
         });
         global.prefWindow.on('close', function()

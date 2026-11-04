@@ -1349,3 +1349,217 @@ html[data-view='day'] .footer .punch-button {
 html[data-view='day'] .punch-button img {
   display: none;
 }
+
+.interface-tour {
+  --tour-accent: #1d766e;
+
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: block;
+  color: var(--page-color);
+  font-family: Montserrat, sans-serif;
+}
+
+html[data-theme='dark'] .interface-tour {
+  --tour-accent: #78c9bd;
+}
+
+.interface-tour[hidden] {
+  display: none;
+}
+
+.interface-tour-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 58%);
+}
+
+.interface-tour-panel {
+  position: fixed;
+  width: min(440px, calc(100vw - 32px));
+  overflow: hidden;
+  border: 1px solid var(--table-border);
+  border-radius: 8px;
+  background: var(--page-bground);
+  box-shadow: 0 18px 56px rgb(0 0 0 / 28%);
+}
+
+.interface-tour-panel::after {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  content: '';
+}
+
+.interface-tour-panel[data-placement='right']::after {
+  top: var(--tour-arrow-offset, 50%);
+  left: -20px;
+  border-right-color: var(--page-bground);
+  transform: translateY(-50%);
+}
+
+.interface-tour-panel[data-placement='left']::after {
+  top: var(--tour-arrow-offset, 50%);
+  right: -20px;
+  border-left-color: var(--page-bground);
+  transform: translateY(-50%);
+}
+
+.interface-tour-panel[data-placement='below']::after {
+  top: -20px;
+  left: var(--tour-arrow-offset, 50%);
+  border-bottom-color: var(--page-bground);
+  transform: translateX(-50%);
+}
+
+.interface-tour-panel[data-placement='above']::after {
+  bottom: -20px;
+  left: var(--tour-arrow-offset, 50%);
+  border-top-color: var(--page-bground);
+  transform: translateX(-50%);
+}
+
+.interface-tour-topline,
+.interface-tour-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.interface-tour-topline {
+  border-bottom: 1px solid var(--table-border);
+}
+
+.interface-tour-label,
+.interface-tour-progress {
+  margin: 0;
+  color: var(--page-color);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.interface-tour-close {
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--page-color);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.interface-tour-content {
+  padding: 22px 24px 12px;
+}
+
+.interface-tour-art {
+  display: grid;
+  min-height: 88px;
+  place-items: center;
+  border-left: 4px solid var(--tour-accent);
+  background: color-mix(in srgb, var(--tour-accent) 10%, var(--page-bground));
+  color: var(--tour-accent);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.interface-tour-title {
+  margin: 20px 0 8px;
+  color: var(--page-color);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.interface-tour-body {
+  margin: 0;
+  color: var(--page-color);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.interface-tour-actions {
+  border-top: 1px solid var(--table-border);
+}
+
+.interface-tour-open {
+  display: block;
+  min-height: 38px;
+  margin-top: 14px;
+  padding: 7px 12px;
+  border: 1px solid var(--tour-accent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--tour-accent) 10%, var(--page-bground));
+  color: var(--page-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.interface-tour-open[hidden] {
+  display: none;
+}
+
+.interface-tour-action-group {
+  display: flex;
+  gap: 8px;
+}
+
+.interface-tour button:focus-visible {
+  outline: 3px solid var(--tour-accent);
+  outline-offset: 2px;
+}
+
+.interface-tour-skip,
+.interface-tour-back,
+.interface-tour-next {
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid var(--table-border);
+  border-radius: 4px;
+  background: var(--page-bground);
+  color: var(--page-color);
+  font: inherit;
+  cursor: pointer;
+}
+
+.interface-tour-next {
+  border-color: var(--tour-accent);
+  background: var(--tour-accent);
+  color: white;
+}
+
+.interface-tour button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.tour-highlight {
+  position: relative !important;
+  z-index: 10001 !important;
+  outline: 3px solid var(--tour-accent, #1d766e) !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgb(29 118 110 / 26%), 0 0 0 100vmax rgb(0 0 0 / 10%);
+}
+
+@media (width <= 480px) {
+  .interface-tour-topline,
+  .interface-tour-actions {
+    padding: 12px 14px;
+  }
+
+  .interface-tour-content {
+    padding: 16px 16px 10px;
+  }
+
+  .interface-tour-skip,
+  .interface-tour-back,
+  .interface-tour-next {
+    padding: 7px 9px;
+    font-size: 0.85rem;
+  }
+}

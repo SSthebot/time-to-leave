@@ -49,7 +49,7 @@ function createMenu()
         },
         {
             label: i18NextConfig.getCurrentTranslation('$Menu.help'),
-            submenu: getHelpMenuTemplate()
+            submenu: getHelpMenuTemplate(mainWindow)
         }
     ]);
 

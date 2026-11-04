@@ -254,9 +254,9 @@ describe('menus.js', () =>
 
     describe('getHelpMenuTemplate', () =>
     {
-        it('Should have 5 option', () =>
+        it('Should have 7 options', () =>
         {
-            assert.strictEqual(getHelpMenuTemplate().length, 5);
+            assert.strictEqual(getHelpMenuTemplate().length, 7);
         });
 
         it('Each element should be a valid field', () =>
@@ -281,6 +281,14 @@ describe('menus.js', () =>
             });
         });
 
+        it('Should reopen the interface tour', () =>
+        {
+            const sendStub = stub();
+            const mainWindow = { webContents: { send: sendStub } };
+            getHelpMenuTemplate(mainWindow)[0].click();
+            assert.strictEqual(sendStub.calledOnceWithExactly(IpcConstants.ShowInterfaceTour), true);
+        });
+
         it('Should open github', (done) =>
         {
             const shellStub = stub(shell, 'openExternal').callsFake((key) =>
@@ -289,7 +297,7 @@ describe('menus.js', () =>
                 shellStub.restore();
                 done();
             });
-            getHelpMenuTemplate()[0].click();
+            getHelpMenuTemplate()[2].click();
         });
 
         it('Should open github', (done) =>
@@ -299,7 +307,7 @@ describe('menus.js', () =>
                 assert.strictEqual(key, true);
                 done();
             });
-            getHelpMenuTemplate()[1].click();
+            getHelpMenuTemplate()[3].click();
         });
 
         it('Should open feedback', (done) =>
@@ -310,14 +318,14 @@ describe('menus.js', () =>
                 shellStub.restore();
                 done();
             });
-            getHelpMenuTemplate()[2].click();
+            getHelpMenuTemplate()[4].click();
         });
 
         it('Should show about message box and write to clipboard', (done) =>
         {
             const writeTextStub = stub(clipboard, 'writeText');
             const showMessageBoxStub = stub(windowAux, 'showDialog').resolves({response: 0});
-            getHelpMenuTemplate({})[4].click();
+            getHelpMenuTemplate({})[6].click();
             setTimeout(() =>
             {
                 assert.strictEqual(showMessageBoxStub.calledOnce, true);
@@ -331,7 +339,7 @@ describe('menus.js', () =>
         {
             const writeTextStub = stub(clipboard, 'writeText');
             const showMessageBoxStub = stub(windowAux, 'showDialog').resolves({response: 1});
-            getHelpMenuTemplate({})[4].click();
+            getHelpMenuTemplate({})[6].click();
             assert.strictEqual(showMessageBoxStub.calledOnce, true);
             assert.strictEqual(writeTextStub.notCalled, true);
             showMessageBoxStub.restore();
@@ -342,7 +350,7 @@ describe('menus.js', () =>
             const consoleSpy = stub(console, 'log');
             const writeTextStub = stub(clipboard, 'writeText');
             const showMessageBoxStub = stub(windowAux, 'showDialog').rejects({response: 1});
-            getHelpMenuTemplate({})[4].click();
+            getHelpMenuTemplate({})[6].click();
             assert.strictEqual(showMessageBoxStub.calledOnce, true);
             assert.strictEqual(writeTextStub.notCalled, true);
 
