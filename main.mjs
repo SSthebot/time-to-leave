@@ -1,6 +1,7 @@
 'use strict';
 
 import { app, ipcMain } from 'electron';
+import Store from 'electron-store';
 
 import { appConfig } from './js/app-config.mjs';
 import { createWindow, createMenu, getMainWindow, triggerStartupDialogs } from './js/main-window.mjs';
@@ -18,6 +19,37 @@ import IpcConstants from './js/ipc-constants.mjs';
 const require = createRequire(import.meta.url);
 
 const WindowAux = require('./js/window-aux.cjs');
+const interfaceTourStore = new Store({ name: 'interface-tour' });
+const interfaceTourTranslationKeys = [
+    'label', 'times-title', 'times-body', 'times-art', 'punch-title', 'punch-body', 'punch-art',
+    'alerts-title', 'alerts-body', 'alerts-art', 'days-title', 'days-body', 'days-art',
+    'skip', 'back', 'next', 'finish', 'close', 'open-preferences', 'open-waiver'
+];
+
+ipcMain.handle(IpcConstants.GetInterfaceTourData, () => ({
+    seen: interfaceTourStore.get('seen', false),
+    translations: Object.fromEntries(interfaceTourTranslationKeys.map((key) =>
+        [key, i18NextConfig.getCurrentTranslation(`$InterfaceTour.${key}`)]))
+}));
+
+ipcMain.handle(IpcConstants.SetInterfaceTourSeen, (_event, seen) =>
+{
+    interfaceTourStore.set('seen', seen === true);
+    return true;
+});
+
+ipcMain.on(IpcConstants.OpenInterfaceTourDestination, (_event, destination) =>
+{
+    const mainWindow = getMainWindow();
+    if (destination === 'preferences')
+    {
+        Windows.openPreferencesWindow(mainWindow, true);
+    }
+    else if (destination === 'waiver')
+    {
+        Windows.openWaiverManagerWindow(mainWindow);
+    }
+});
 
 if (appConfig.win32)
 {

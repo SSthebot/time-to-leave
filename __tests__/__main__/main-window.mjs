@@ -106,6 +106,7 @@ describe('main-window.mjs', () =>
         ipcMain.handle(IpcConstants.GetStoreContents, () => new Promise(resolve => resolve({})));
         ipcMain.handle(IpcConstants.GetWaiverStoreContents, () => new Promise(resolve => resolve({})));
         ipcMain.handle(IpcConstants.ComputeAllTimeBalanceUntil, () => new Promise(resolve => resolve({})));
+        ipcMain.handle(IpcConstants.GetInterfaceTourData, () => ({ seen: true, translations: {} }));
     });
 
     beforeEach(() =>

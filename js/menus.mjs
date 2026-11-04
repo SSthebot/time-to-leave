@@ -288,9 +288,19 @@ function getViewMenuTemplate()
     ];
 }
 
-function getHelpMenuTemplate()
+function getHelpMenuTemplate(mainWindow)
 {
     return [
+        {
+            label: i18NextConfig.getCurrentTranslation('$Menu.interface-tour'),
+            click()
+            {
+                mainWindow?.webContents.send(IpcConstants.ShowInterfaceTour);
+            }
+        },
+        {
+            type: 'separator'
+        },
         {
             label: i18NextConfig.getCurrentTranslation('$Menu.ttl-github'),
             click()
